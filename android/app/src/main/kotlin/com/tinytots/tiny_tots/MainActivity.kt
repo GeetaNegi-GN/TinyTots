@@ -33,14 +33,29 @@ class MainActivity : FlutterActivity(), TextToSpeech.OnInitListener {
     private fun handleCall(call: MethodCall, result: MethodChannel.Result) {
         val preferences = getSharedPreferences("tiny_tots_progress", Context.MODE_PRIVATE)
         when (call.method) {
+            "loadCategoryProgress" -> {
+                val cat = call.argument<String>("category") ?: "abc"
+                result.success(mapOf(
+                    "explored" to preferences.getString("explored_$cat", ""),
+                    "lastIndex" to preferences.getInt("lastIndex_$cat", 0)
+                ))
+            }
+            "saveCategoryProgress" -> {
+                val cat = call.argument<String>("category") ?: "abc"
+                preferences.edit()
+                    .putString("explored_$cat", call.argument<String>("explored") ?: "")
+                    .putInt("lastIndex_$cat", call.argument<Int>("lastIndex") ?: 0)
+                    .apply()
+                result.success(null)
+            }
             "loadProgress" -> result.success(mapOf(
-                "explored" to preferences.getString("explored", ""),
-                "lastIndex" to preferences.getInt("lastIndex", 0)
+                "explored" to preferences.getString("explored_abc", preferences.getString("explored", "")),
+                "lastIndex" to preferences.getInt("lastIndex_abc", preferences.getInt("lastIndex", 0))
             ))
             "saveProgress" -> {
                 preferences.edit()
-                    .putString("explored", call.argument<String>("explored") ?: "")
-                    .putInt("lastIndex", call.argument<Int>("lastIndex") ?: 0)
+                    .putString("explored_abc", call.argument<String>("explored") ?: "")
+                    .putInt("lastIndex_abc", call.argument<Int>("lastIndex") ?: 0)
                     .apply()
                 result.success(null)
             }

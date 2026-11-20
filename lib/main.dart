@@ -1,7 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'data/alphabet_data.dart';
+import 'config/learning_levels.dart';
+import 'data/category_data.dart';
+import 'games/game_zone_screen.dart';
+import 'localization/app_localizations.dart';
+import 'phonics/phonics_hub_screen.dart';
+import 'tracing/trace_hub_screen.dart';
 import 'models/learning_card.dart';
+import 'models/learning_category.dart';
 import 'services/progress_service.dart';
 import 'services/pronunciation_service.dart';
 import 'theme/app_theme.dart';
@@ -17,7 +23,7 @@ class TinyTotsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-        title: 'TinyTots',
+        title: AppLocalizations.tr('app.title'),
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
         home: const WelcomeScreen(),
@@ -29,6 +35,10 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final level1 = defaultLearningLevels[0];
+    final level2 = defaultLearningLevels[1];
+    final level3 = defaultLearningLevels[2];
+
     return PlaygroundBackground(
       child: Center(
         child: ConstrainedBox(
@@ -39,17 +49,17 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 const BrandHeader(),
                 const SizedBox(height: 16),
-                const SpeechBubble(
-                  title: 'Hello Little Learner! 👋',
-                  subtitle: 'What would you like to explore today?',
+                SpeechBubble(
+                  title: AppLocalizations.tr('app.welcomeTitle'),
+                  subtitle: AppLocalizations.tr('app.welcomeSubtitle'),
                 ),
                 const SizedBox(height: 24),
                 ClassCard(
-                  title: 'Kindergarten',
-                  subtitle: 'Let’s learn together!',
+                  title: AppLocalizations.tr(level1.titleKey),
+                  subtitle: AppLocalizations.tr(level1.descriptionKey),
                   illustrationId: 'ABC',
                   color: AppTheme.yellow,
-                  action: 'Start Learning',
+                  action: AppLocalizations.tr('common.startLearning'),
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -58,20 +68,117 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const ClassCard(
-                  title: 'LKG',
-                  subtitle: 'A new adventure is on its way!',
+                ClassCard(
+                  title: AppLocalizations.tr(level2.titleKey),
+                  subtitle: AppLocalizations.tr(level2.descriptionKey),
                   illustrationId: 'Numbers',
                   color: AppTheme.skyBlue,
                   locked: true,
                 ),
                 const SizedBox(height: 16),
-                const ClassCard(
-                  title: 'UKG',
-                  subtitle: 'A new adventure is on its way!',
+                ClassCard(
+                  title: AppLocalizations.tr(level3.titleKey),
+                  subtitle: AppLocalizations.tr(level3.descriptionKey),
                   illustrationId: 'Shapes',
                   color: AppTheme.lavender,
                   locked: true,
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: BouncyButton(
+                        color: AppTheme.mintGreen,
+                        borderRadius: 26,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const GameZoneScreen(),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.videogame_asset_rounded, color: AppTheme.navy, size: 22),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                AppLocalizations.tr('common.playAndLearn'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppTheme.navy,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: BouncyButton(
+                        color: AppTheme.skyBlue,
+                        borderRadius: 26,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const TraceHubScreen(),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.edit_rounded, color: AppTheme.navy, size: 22),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                AppLocalizations.tr('common.traceAndWrite'),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w900,
+                                  color: AppTheme.navy,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                BouncyButton(
+                  color: AppTheme.coral,
+                  borderRadius: 26,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PhonicsHubScreen(),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.volume_up_rounded, color: AppTheme.navy, size: 22),
+                      const SizedBox(width: 8),
+                      Text(
+                        AppLocalizations.tr('common.soundsAndWords'),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          color: AppTheme.navy,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -101,12 +208,12 @@ class BrandHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'TinyTots',
-                style: TextStyle(
+                AppLocalizations.tr('app.title'),
+                style: const TextStyle(
                   fontSize: 34,
                   fontWeight: FontWeight.w900,
                   color: AppTheme.navy,
@@ -114,8 +221,8 @@ class BrandHeader extends StatelessWidget {
                 ),
               ),
               Text(
-                'Little Steps, Big Learning!',
-                style: TextStyle(
+                AppLocalizations.tr('app.tagline'),
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppTheme.navy,
                   fontWeight: FontWeight.w700,
@@ -272,7 +379,7 @@ class ClassCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 5),
                     Text(
-                      locked ? 'Coming Soon' : action!,
+                      locked ? AppLocalizations.tr('common.comingSoon') : action!,
                       style: const TextStyle(
                         fontSize: 12,
                         color: AppTheme.navy,
@@ -290,24 +397,34 @@ class ClassCard extends StatelessWidget {
   }
 }
 
-class KindergartenScreen extends StatelessWidget {
+class KindergartenScreen extends StatefulWidget {
   const KindergartenScreen({super.key});
 
-  static const categories = [
-    ('ABC / English Alphabet', 'ABC', true),
-    ('Fruits', 'Fruits', false),
-    ('Vegetables', 'Vegetables', false),
-    ('Animals', 'Animals', false),
-    ('Birds', 'Birds', false),
-    ('Numbers', 'Numbers', false),
-    ('Colors', 'Colors', false),
-    ('Shapes', 'Shapes', false),
-    ('Body Parts', 'Body Parts', false),
-    ('Days of the Week', 'Days', false),
-  ];
+  @override
+  State<KindergartenScreen> createState() => _KindergartenScreenState();
+}
+
+class _KindergartenScreenState extends State<KindergartenScreen> {
+  final Map<String, LearningProgress> _progressMap = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProgresses();
+  }
+
+  Future<void> _loadProgresses() async {
+    for (final cat in kindergartenCategories) {
+      final p = await ProgressService.loadCategoryProgress(cat.id);
+      _progressMap[cat.id] = p;
+    }
+    if (mounted) setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    final level1 = defaultLearningLevels[0];
+
     return PlaygroundBackground(
       child: Column(
         children: [
@@ -325,21 +442,21 @@ class KindergartenScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 const OwlMascotWidget(pose: OwlPose.welcome, size: 48),
                 const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Kindergarten',
-                        style: TextStyle(
+                        AppLocalizations.tr(level1.titleKey),
+                        style: const TextStyle(
                           fontSize: 24,
                           color: AppTheme.navy,
                           fontWeight: FontWeight.w900,
                         ),
                       ),
                       Text(
-                        'Let’s Start Learning!',
-                        style: TextStyle(
+                        AppLocalizations.tr('levels.level_1.description'),
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppTheme.navy,
                           fontWeight: FontWeight.w700,
@@ -347,6 +464,31 @@ class KindergartenScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                BouncyButton(
+                  color: AppTheme.softWhite,
+                  borderRadius: 20,
+                  padding: const EdgeInsets.all(10),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PhonicsHubScreen(),
+                    ),
+                  ),
+                  child: const Icon(Icons.volume_up_rounded, color: AppTheme.navy),
+                ),
+                const SizedBox(width: 8),
+                BouncyButton(
+                  color: AppTheme.softWhite,
+                  borderRadius: 20,
+                  padding: const EdgeInsets.all(10),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const GameZoneScreen(),
+                    ),
+                  ),
+                  child: const Icon(Icons.videogame_asset_rounded, color: AppTheme.navy),
                 ),
               ],
             ),
@@ -359,23 +501,25 @@ class KindergartenScreen extends StatelessWidget {
                   crossAxisCount: constraints.maxWidth > 560 ? 3 : 2,
                   mainAxisSpacing: 14,
                   crossAxisSpacing: 14,
-                  childAspectRatio: 1.05,
+                  childAspectRatio: 1.02,
                 ),
-                itemCount: categories.length,
+                itemCount: kindergartenCategories.length,
                 itemBuilder: (context, index) {
-                  final item = categories[index];
+                  final cat = kindergartenCategories[index];
+                  final prog = _progressMap[cat.id] ??
+                      const LearningProgress(explored: {}, lastIndex: 0);
                   return CategoryTile(
-                    title: item.$1,
-                    illustrationId: item.$2,
-                    active: item.$3,
-                    onTap: item.$3
-                        ? () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const AbcScreen(),
-                              ),
-                            )
-                        : null,
+                    category: cat,
+                    progress: prog,
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CategoryLearningScreen(category: cat),
+                        ),
+                      );
+                      _loadProgresses();
+                    },
                   );
                 },
               ),
@@ -390,21 +534,24 @@ class KindergartenScreen extends StatelessWidget {
 class CategoryTile extends StatelessWidget {
   const CategoryTile({
     super.key,
-    required this.title,
-    required this.illustrationId,
-    required this.active,
-    this.onTap,
+    required this.category,
+    required this.progress,
+    required this.onTap,
   });
 
-  final String title, illustrationId;
-  final bool active;
-  final VoidCallback? onTap;
+  final LearningCategory category;
+  final LearningProgress progress;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    final total = category.cards.length;
+    final exploredCount = progress.explored.length;
+    final isDone = exploredCount == total;
+
     return Material(
-      color: active ? AppTheme.mintGreen : AppTheme.disabledBg.withValues(alpha: 0.7),
-      elevation: active ? 3 : 0,
+      color: isDone ? AppTheme.yellow : AppTheme.mintGreen,
+      elevation: 3,
       shadowColor: AppTheme.mintGreen.withValues(alpha: 0.4),
       borderRadius: BorderRadius.circular(26),
       child: InkWell(
@@ -419,11 +566,11 @@ class CategoryTile extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.7),
+                    color: Colors.white.withValues(alpha: 0.8),
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
-                    active ? Icons.play_arrow_rounded : Icons.lock_rounded,
+                    isDone ? Icons.check_circle_rounded : Icons.play_arrow_rounded,
                     color: AppTheme.navy,
                     size: 18,
                   ),
@@ -434,37 +581,42 @@ class CategoryTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 48,
-                    height: 48,
+                    width: 46,
+                    height: 46,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.65),
+                      color: Colors.white.withValues(alpha: 0.7),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: CategoryIllustration(
-                        categoryId: illustrationId,
-                        size: 36,
+                        categoryId: category.illustrationId,
+                        size: 34,
                       ),
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    title,
+                    category.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontWeight: FontWeight.w900,
-                      fontSize: 15,
+                      fontSize: 14,
                       color: AppTheme.navy,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    active ? 'Start learning' : 'Coming Soon',
+                    isDone
+                        ? AppLocalizations.tr('learning.completedBadge')
+                        : AppLocalizations.tr('learning.exploredStatus', args: {
+                            'explored': '$exploredCount',
+                            'total': '$total',
+                          }),
                     style: TextStyle(
                       fontSize: 11,
                       fontWeight: FontWeight.w800,
-                      color: AppTheme.navy.withValues(alpha: 0.8),
+                      color: AppTheme.navy.withValues(alpha: 0.85),
                     ),
                   ),
                 ],
@@ -477,14 +629,24 @@ class CategoryTile extends StatelessWidget {
   }
 }
 
-class AbcScreen extends StatefulWidget {
+class CategoryLearningScreen extends StatefulWidget {
+  const CategoryLearningScreen({super.key, required this.category});
+
+  final LearningCategory category;
+
+  @override
+  State<CategoryLearningScreen> createState() => _CategoryLearningScreenState();
+}
+
+class AbcScreen extends StatelessWidget {
   const AbcScreen({super.key});
 
   @override
-  State<AbcScreen> createState() => _AbcScreenState();
+  Widget build(BuildContext context) =>
+      CategoryLearningScreen(category: kindergartenCategories.first);
 }
 
-class _AbcScreenState extends State<AbcScreen> {
+class _CategoryLearningScreenState extends State<CategoryLearningScreen> {
   PageController? _controller;
   LearningProgress _progress = const LearningProgress(
     explored: {},
@@ -501,8 +663,8 @@ class _AbcScreenState extends State<AbcScreen> {
   }
 
   Future<void> _load() async {
-    _progress = await ProgressService.load();
-    _index = _progress.lastIndex.clamp(0, alphabetCards.length - 1);
+    _progress = await ProgressService.loadCategoryProgress(widget.category.id);
+    _index = _progress.lastIndex.clamp(0, widget.category.cards.length - 1);
     _controller = PageController(initialPage: _index);
     if (!mounted) return;
     setState(() => _ready = true);
@@ -510,39 +672,42 @@ class _AbcScreenState extends State<AbcScreen> {
   }
 
   Future<void> _visit(int index, {bool reward = true}) async {
-    final card = alphabetCards[index];
+    final card = widget.category.cards[index];
     final fresh = !_progress.explored.contains(card.id);
     final explored = {..._progress.explored, card.id};
     _progress = LearningProgress(explored: explored, lastIndex: index);
-    await ProgressService.save(_progress);
+    await ProgressService.saveCategoryProgress(widget.category.id, _progress);
     if (!mounted) return;
     setState(() {});
     if (fresh && reward) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           backgroundColor: AppTheme.navy,
-          duration: Duration(seconds: 2),
+          duration: const Duration(seconds: 2),
           content: Row(
             children: [
-              Text('⭐', style: TextStyle(fontSize: 22)),
-              SizedBox(width: 8),
+              const Text('⭐', style: TextStyle(fontSize: 22)),
+              const SizedBox(width: 8),
               Text(
-                'Great job! You earned a star!',
-                style: TextStyle(fontWeight: FontWeight.w900),
+                AppLocalizations.tr('learning.earnedStar'),
+                style: const TextStyle(fontWeight: FontWeight.w900),
               ),
             ],
           ),
         ),
       );
     }
-    if (fresh && explored.length == alphabetCards.length && !_celebrated) {
+    if (fresh && explored.length == widget.category.cards.length && !_celebrated) {
       _celebrated = true;
       await Future<void>.delayed(const Duration(milliseconds: 550));
       if (mounted) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => CompletionScreen(stars: explored.length),
+            builder: (_) => CompletionScreen(
+              category: widget.category,
+              stars: explored.length,
+            ),
           ),
         );
       }
@@ -560,7 +725,7 @@ class _AbcScreenState extends State<AbcScreen> {
   }
 
   void _go(int target) {
-    if (target >= 0 && target < alphabetCards.length) {
+    if (target >= 0 && target < widget.category.cards.length) {
       _controller?.animateToPage(
         target,
         duration: const Duration(milliseconds: 300),
@@ -585,6 +750,8 @@ class _AbcScreenState extends State<AbcScreen> {
       );
     }
 
+    final categoryShort = widget.category.name.split(' / ').first;
+
     return PlaygroundBackground(
       showHills: false,
       child: Column(
@@ -601,10 +768,10 @@ class _AbcScreenState extends State<AbcScreen> {
                   child: const Icon(Icons.arrow_back_rounded, color: AppTheme.navy),
                 ),
                 const SizedBox(width: 12),
-                const Text(
-                  'ABC Time!',
-                  style: TextStyle(
-                    fontSize: 22,
+                Text(
+                  AppLocalizations.tr('learning.timeTitle', args: {'category': categoryShort}),
+                  style: const TextStyle(
+                    fontSize: 20,
                     color: AppTheme.navy,
                     fontWeight: FontWeight.w900,
                   ),
@@ -618,7 +785,10 @@ class _AbcScreenState extends State<AbcScreen> {
                     final selected = await Navigator.push<int>(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => AlphabetGrid(progress: _progress),
+                        builder: (_) => CategoryGrid(
+                          category: widget.category,
+                          progress: _progress,
+                        ),
                       ),
                     );
                     if (selected != null) _go(selected);
@@ -631,22 +801,24 @@ class _AbcScreenState extends State<AbcScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 6),
             child: ProgressHeader(
+              categoryName: categoryShort,
               explored: _progress.explored.length,
               index: _index,
+              total: widget.category.cards.length,
             ),
           ),
           Expanded(
             child: PageView.builder(
               controller: _controller,
-              itemCount: alphabetCards.length,
+              itemCount: widget.category.cards.length,
               onPageChanged: (index) {
                 setState(() => _index = index);
                 _visit(index);
               },
               itemBuilder: (context, index) => Flashcard(
-                card: alphabetCards[index],
+                card: widget.category.cards[index],
                 speaking: _speaking && index == _index,
-                onSpeak: () => _speak(alphabetCards[index]),
+                onSpeak: () => _speak(widget.category.cards[index]),
               ),
             ),
           ),
@@ -658,12 +830,12 @@ class _AbcScreenState extends State<AbcScreen> {
                   child: BouncyButton(
                     color: AppTheme.lavender,
                     onTap: _index == 0 ? null : () => _go(_index - 1),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.arrow_back_rounded, size: 20),
-                        SizedBox(width: 8),
-                        Text('Previous'),
+                        const Icon(Icons.arrow_back_rounded, size: 20),
+                        const SizedBox(width: 8),
+                        Text(AppLocalizations.tr('common.previous')),
                       ],
                     ),
                   ),
@@ -672,13 +844,15 @@ class _AbcScreenState extends State<AbcScreen> {
                 Expanded(
                   child: BouncyButton(
                     color: AppTheme.skyBlue,
-                    onTap: _index == 25 ? null : () => _go(_index + 1),
-                    child: const Row(
+                    onTap: _index == widget.category.cards.length - 1
+                        ? null
+                        : () => _go(_index + 1),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Next'),
-                        SizedBox(width: 8),
-                        Icon(Icons.arrow_forward_rounded, size: 20),
+                        Text(AppLocalizations.tr('common.next')),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward_rounded, size: 20),
                       ],
                     ),
                   ),
@@ -695,11 +869,14 @@ class _AbcScreenState extends State<AbcScreen> {
 class ProgressHeader extends StatelessWidget {
   const ProgressHeader({
     super.key,
+    required this.categoryName,
     required this.explored,
     required this.index,
+    required this.total,
   });
 
-  final int explored, index;
+  final String categoryName;
+  final int explored, index, total;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -707,7 +884,11 @@ class ProgressHeader extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Alphabet ${index + 1} of 26',
+                AppLocalizations.tr('learning.progress', args: {
+                  'category': categoryName,
+                  'index': '${index + 1}',
+                  'total': '$total',
+                }),
                 style: const TextStyle(
                   color: AppTheme.navy,
                   fontWeight: FontWeight.w900,
@@ -736,7 +917,7 @@ class ProgressHeader extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: LinearProgressIndicator(
-              value: (index + 1) / 26,
+              value: (index + 1) / total,
               minHeight: 12,
               backgroundColor: AppTheme.disabledBg,
               valueColor: const AlwaysStoppedAnimation(AppTheme.mintGreen),
@@ -791,39 +972,57 @@ class Flashcard extends StatelessWidget {
                               Text(
                                 card.uppercase,
                                 style: const TextStyle(
-                                  fontSize: 78,
+                                  fontSize: 70,
                                   height: 1,
                                   color: AppTheme.navy,
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
-                              const SizedBox(width: 10),
-                              Text(
-                                card.lowercase,
-                                style: const TextStyle(
-                                  fontSize: 52,
-                                  height: 1,
-                                  color: AppTheme.navy,
-                                  fontWeight: FontWeight.w700,
+                              if (card.lowercase != card.uppercase && card.lowercase.length <= 4) ...[
+                                const SizedBox(width: 10),
+                                Text(
+                                  card.lowercase,
+                                  style: const TextStyle(
+                                    fontSize: 44,
+                                    height: 1,
+                                    color: AppTheme.navy,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ],
                           ),
                           const SizedBox(height: 10),
                           Container(
-                            height: 155,
+                            height: 165,
                             width: double.infinity,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.65),
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(28),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppTheme.navy.withValues(alpha: 0.06),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
                             child: AnimatedScale(
-                              scale: speaking ? 1.12 : 1.0,
+                              scale: speaking ? 1.08 : 1.0,
                               duration: const Duration(milliseconds: 230),
-                              child: FlashcardIllustration(
-                                letterId: card.id,
-                                size: 120,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(24),
+                                child: Image.asset(
+                                  card.imagePath,
+                                  fit: BoxFit.contain,
+                                  height: 145,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      FlashcardIllustration(
+                                    letterId: card.id.toUpperCase(),
+                                    size: 120,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
@@ -831,11 +1030,22 @@ class Flashcard extends StatelessWidget {
                           Text(
                             card.word,
                             style: const TextStyle(
-                              fontSize: 28,
+                              fontSize: 27,
                               color: AppTheme.navy,
                               fontWeight: FontWeight.w900,
                             ),
                           ),
+                          if (card.secondaryText != null) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              card.secondaryText!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: AppTheme.navy.withValues(alpha: 0.8),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
                           const SizedBox(height: 12),
                           AnimatedContainer(
                             duration: const Duration(milliseconds: 180),
@@ -865,7 +1075,9 @@ class Flashcard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  speaking ? 'Listening...' : 'Tap to hear',
+                                  speaking
+                                      ? AppLocalizations.tr('common.listening')
+                                      : AppLocalizations.tr('common.tapToHear'),
                                   style: TextStyle(
                                     color: speaking ? Colors.white : AppTheme.navy,
                                     fontWeight: FontWeight.w900,
@@ -887,13 +1099,20 @@ class Flashcard extends StatelessWidget {
       );
 }
 
-class AlphabetGrid extends StatelessWidget {
-  const AlphabetGrid({super.key, required this.progress});
+class CategoryGrid extends StatelessWidget {
+  const CategoryGrid({
+    super.key,
+    required this.category,
+    required this.progress,
+  });
 
+  final LearningCategory category;
   final LearningProgress progress;
 
   @override
   Widget build(BuildContext context) {
+    final catShort = category.name.split(' / ').first;
+
     return PlaygroundBackground(
       showHills: false,
       child: Column(
@@ -910,10 +1129,10 @@ class AlphabetGrid extends StatelessWidget {
                   child: const Icon(Icons.arrow_back_rounded, color: AppTheme.navy),
                 ),
                 const SizedBox(width: 14),
-                const Text(
-                  'Pick a letter',
-                  style: TextStyle(
-                    fontSize: 22,
+                Text(
+                  AppLocalizations.tr('common.pickCategory', args: {'category': catShort}),
+                  style: const TextStyle(
+                    fontSize: 20,
                     fontWeight: FontWeight.w900,
                     color: AppTheme.navy,
                   ),
@@ -925,14 +1144,14 @@ class AlphabetGrid extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(18),
               child: GridView.builder(
-                itemCount: alphabetCards.length,
+                itemCount: category.cards.length,
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 90,
+                  maxCrossAxisExtent: 95,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                 ),
                 itemBuilder: (context, index) {
-                  final card = alphabetCards[index];
+                  final card = category.cards[index];
                   final seen = progress.explored.contains(card.id);
                   return Material(
                     color: Color(card.colorValue),
@@ -944,9 +1163,11 @@ class AlphabetGrid extends StatelessWidget {
                         children: [
                           Center(
                             child: Text(
-                              card.uppercase,
+                              card.uppercase.length <= 3
+                                  ? card.uppercase
+                                  : card.word.substring(0, 1),
                               style: const TextStyle(
-                                fontSize: 36,
+                                fontSize: 32,
                                 color: AppTheme.navy,
                                 fontWeight: FontWeight.w900,
                               ),
@@ -972,13 +1193,34 @@ class AlphabetGrid extends StatelessWidget {
   }
 }
 
+class AlphabetGrid extends StatelessWidget {
+  const AlphabetGrid({super.key, required this.progress});
+
+  final LearningProgress progress;
+
+  @override
+  Widget build(BuildContext context) => CategoryGrid(
+        category: kindergartenCategories.first,
+        progress: progress,
+      );
+}
+
 class CompletionScreen extends StatelessWidget {
-  const CompletionScreen({super.key, required this.stars});
+  const CompletionScreen({
+    super.key,
+    required this.stars,
+    this.category,
+  });
 
   final int stars;
+  final LearningCategory? category;
 
   @override
   Widget build(BuildContext context) {
+    final cat = category ?? kindergartenCategories.first;
+    final total = cat.cards.length;
+    final catShort = cat.name.split(' / ').first;
+
     return PlaygroundBackground(
       child: Center(
         child: Padding(
@@ -993,20 +1235,20 @@ class CompletionScreen extends StatelessWidget {
                 size: 110,
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Amazing! You Did It!',
+              Text(
+                AppLocalizations.tr('common.amazing'),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 32,
                   color: AppTheme.navy,
                   fontWeight: FontWeight.w900,
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'You explored all 26 letters\nof the alphabet!',
+              Text(
+                cat.completionMessage,
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 17,
                   height: 1.3,
                   color: AppTheme.navy,
@@ -1025,7 +1267,7 @@ class CompletionScreen extends StatelessWidget {
                   boxShadow: AppTheme.cardShadow(shadowColor: AppTheme.yellow),
                 ),
                 child: Text(
-                  '26 / 26 explored  •  ⭐ $stars stars',
+                  '$total / $total explored  •  ⭐ $stars stars',
                   style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     color: AppTheme.navy,
@@ -1034,20 +1276,29 @@ class CompletionScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 28),
-              SizedBox(
-                width: 240,
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 220, maxWidth: 320),
                 child: BouncyButton(
                   color: AppTheme.skyBlue,
                   onTap: () => Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (_) => const AbcScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => CategoryLearningScreen(category: cat),
+                    ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.replay_rounded, size: 22),
-                      SizedBox(width: 8),
-                      Text('Replay ABC'),
+                      const Icon(Icons.replay_rounded, size: 22),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          AppLocalizations.tr('common.replay', args: {'category': catShort}),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1057,9 +1308,9 @@ class CompletionScreen extends StatelessWidget {
                 onPressed: () =>
                     Navigator.popUntil(context, (route) => route.isFirst),
                 icon: const Icon(Icons.home_rounded, color: AppTheme.navy),
-                label: const Text(
-                  'Back to Kindergarten',
-                  style: TextStyle(
+                label: Text(
+                  AppLocalizations.tr('common.backToKindergarten'),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     color: AppTheme.navy,
                     fontSize: 15,

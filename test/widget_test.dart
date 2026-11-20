@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:tiny_tots/data/category_data.dart';
 import 'package:tiny_tots/main.dart';
 
 void main() {
@@ -11,7 +12,8 @@ void main() {
         .setMockMethodCallHandler(
           const MethodChannel('tiny_tots/learning'),
           (MethodCall methodCall) async {
-            if (methodCall.method == 'loadProgress') {
+            if (methodCall.method == 'loadProgress' ||
+                methodCall.method == 'loadCategoryProgress') {
               return {'explored': '', 'lastIndex': 0};
             }
             return null;
@@ -45,7 +47,7 @@ void main() {
   });
 
   testWidgets(
-    'Navigating from WelcomeScreen to KindergartenScreen shows syllabus categories',
+    'Navigating from WelcomeScreen to KindergartenScreen shows all 11 active syllabus categories',
     (WidgetTester tester) async {
       await tester.pumpWidget(const TinyTotsApp());
       await tester.pumpAndSettle();
@@ -58,6 +60,10 @@ void main() {
       expect(find.text('ABC / English Alphabet'), findsOneWidget);
       expect(find.text('Fruits'), findsOneWidget);
       expect(find.text('Vegetables'), findsOneWidget);
+      expect(find.text('Animals'), findsOneWidget);
+      expect(find.text('Birds'), findsOneWidget);
+      expect(find.text('Numbers 1–20'), findsOneWidget);
+      expect(find.text('Colors'), findsOneWidget);
     },
   );
 
@@ -74,7 +80,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('ABC Time!'), findsOneWidget);
-    expect(find.text('Alphabet 1 of 26'), findsOneWidget);
+    expect(find.text('ABC 1 of 26'), findsOneWidget);
     expect(find.text('Apple'), findsOneWidget);
     expect(find.text('Tap to hear'), findsOneWidget);
     expect(find.text('Next'), findsOneWidget);
@@ -84,8 +90,25 @@ void main() {
     await tester.tap(find.text('Next'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Alphabet 2 of 26'), findsOneWidget);
+    expect(find.text('ABC 2 of 26'), findsOneWidget);
     expect(find.text('Ball'), findsOneWidget);
+  });
+
+  testWidgets('Navigating to Fruits category displays fruit flashcards & controls', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const TinyTotsApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Start Learning'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Fruits'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Fruits Time!'), findsOneWidget);
+    expect(find.text('Fruits 1 of 20'), findsOneWidget);
+    expect(find.text('Apple'), findsAtLeast(1));
   });
 
   testWidgets('Grid view opens, displays letter tiles, and jumps to letter', (
@@ -104,7 +127,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.grid_view_rounded));
     await tester.pumpAndSettle();
 
-    expect(find.text('Pick a letter'), findsOneWidget);
+    expect(find.text('Pick a ABC'), findsOneWidget);
     expect(find.text('C'), findsOneWidget);
 
     // Tap 'C' tile
@@ -112,24 +135,25 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Cat'), findsOneWidget);
-    expect(find.text('Alphabet 3 of 26'), findsOneWidget);
+    expect(find.text('ABC 3 of 26'), findsOneWidget);
   });
 
-  testWidgets('CompletionScreen renders celebration details and buttons', (
+  testWidgets('CompletionScreen renders category celebration details and buttons', (
     WidgetTester tester,
   ) async {
+    final cat = kindergartenCategories.firstWhere((c) => c.id == 'fruits');
     await tester.pumpWidget(
-      const MaterialApp(home: CompletionScreen(stars: 26)),
+      MaterialApp(home: CompletionScreen(stars: 20, category: cat)),
     );
     await tester.pumpAndSettle();
 
     expect(find.text('Amazing! You Did It!'), findsOneWidget);
     expect(
-      find.text('You explored all 26 letters\nof the alphabet!'),
+      find.text('You learned all the delicious fruits!'),
       findsOneWidget,
     );
-    expect(find.text('26 / 26 explored  •  ⭐ 26 stars'), findsOneWidget);
-    expect(find.text('Replay ABC'), findsOneWidget);
+    expect(find.text('20 / 20 explored  •  ⭐ 20 stars'), findsOneWidget);
+    expect(find.text('Replay Fruits'), findsOneWidget);
     expect(find.text('Back to Kindergarten'), findsOneWidget);
   });
 }

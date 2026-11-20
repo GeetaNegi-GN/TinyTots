@@ -9,6 +9,7 @@ const alphabetCards = <LearningCard>[
     word: 'Apple',
     emoji: '🍎',
     colorValue: 0xFFFFD5D5,
+    imagePath: 'assets/images/alphabet/a_apple.jpg',
   ),
   LearningCard(
     id: 'B',
@@ -17,6 +18,7 @@ const alphabetCards = <LearningCard>[
     word: 'Ball',
     emoji: '⚽',
     colorValue: 0xFFDAEAFE,
+    imagePath: 'assets/images/alphabet/b_ball.jpg',
   ),
   LearningCard(
     id: 'C',
@@ -25,6 +27,7 @@ const alphabetCards = <LearningCard>[
     word: 'Cat',
     emoji: '🐱',
     colorValue: 0xFFFFE7B7,
+    imagePath: 'assets/images/alphabet/c_cat.jpg',
   ),
   LearningCard(
     id: 'D',
@@ -33,6 +36,7 @@ const alphabetCards = <LearningCard>[
     word: 'Dog',
     emoji: '🐶',
     colorValue: 0xFFE2D4FF,
+    imagePath: 'assets/images/alphabet/d_dog.jpg',
   ),
   LearningCard(
     id: 'E',
@@ -41,6 +45,7 @@ const alphabetCards = <LearningCard>[
     word: 'Elephant',
     emoji: '🐘',
     colorValue: 0xFFCFEFF2,
+    imagePath: 'assets/images/alphabet/e_elephant.jpg',
   ),
   LearningCard(
     id: 'F',
@@ -49,6 +54,7 @@ const alphabetCards = <LearningCard>[
     word: 'Fish',
     emoji: '🐠',
     colorValue: 0xFFCFE9FF,
+    imagePath: 'assets/images/alphabet/f_fish.jpg',
   ),
   LearningCard(
     id: 'G',
@@ -57,6 +63,7 @@ const alphabetCards = <LearningCard>[
     word: 'Grapes',
     emoji: '🍇',
     colorValue: 0xFFE7D8FF,
+    imagePath: 'assets/images/alphabet/g_grapes.jpg',
   ),
   LearningCard(
     id: 'H',
@@ -65,6 +72,7 @@ const alphabetCards = <LearningCard>[
     word: 'Hen',
     emoji: '🐔',
     colorValue: 0xFFFFE7B7,
+    imagePath: 'assets/images/alphabet/h_hen.jpg',
   ),
   LearningCard(
     id: 'I',
@@ -73,6 +81,7 @@ const alphabetCards = <LearningCard>[
     word: 'Ice Cream',
     emoji: '🍦',
     colorValue: 0xFFFFD8EA,
+    imagePath: 'assets/images/alphabet/i_ice_cream.jpg',
   ),
   LearningCard(
     id: 'J',
@@ -81,6 +90,7 @@ const alphabetCards = <LearningCard>[
     word: 'Jug',
     emoji: '🫗',
     colorValue: 0xFFDAEAFE,
+    imagePath: 'assets/images/alphabet/j_jug.jpg',
   ),
   LearningCard(
     id: 'K',
@@ -89,6 +99,7 @@ const alphabetCards = <LearningCard>[
     word: 'Kite',
     emoji: '🪁',
     colorValue: 0xFFFFF0AA,
+    imagePath: 'assets/images/alphabet/k_kite.jpg',
   ),
   LearningCard(
     id: 'L',
@@ -97,6 +108,7 @@ const alphabetCards = <LearningCard>[
     word: 'Lion',
     emoji: '🦁',
     colorValue: 0xFFFFE0AE,
+    imagePath: 'assets/images/alphabet/l_lion.jpg',
   ),
   LearningCard(
     id: 'M',
@@ -105,6 +117,7 @@ const alphabetCards = <LearningCard>[
     word: 'Mango',
     emoji: '🥭',
     colorValue: 0xFFFFE2A7,
+    imagePath: 'assets/images/alphabet/m_mango.jpg',
   ),
   LearningCard(
     id: 'N',
@@ -113,6 +126,7 @@ const alphabetCards = <LearningCard>[
     word: 'Nest',
     emoji: '🪺',
     colorValue: 0xFFE8D6BC,
+    imagePath: 'assets/images/alphabet/n_nest.jpg',
   ),
   LearningCard(
     id: 'O',
@@ -121,6 +135,7 @@ const alphabetCards = <LearningCard>[
     word: 'Orange',
     emoji: '🍊',
     colorValue: 0xFFFFE0AE,
+    imagePath: 'assets/images/alphabet/o_orange.jpg',
   ),
   LearningCard(
     id: 'P',
@@ -129,6 +144,7 @@ const alphabetCards = <LearningCard>[
     word: 'Parrot',
     emoji: '🦜',
     colorValue: 0xFFD6F3D6,
+    imagePath: 'assets/images/alphabet/p_parrot.jpg',
   ),
   LearningCard(
     id: 'Q',
@@ -137,6 +153,7 @@ const alphabetCards = <LearningCard>[
     word: 'Queen',
     emoji: '👑',
     colorValue: 0xFFFFE7A1,
+    imagePath: 'assets/images/alphabet/q_queen.jpg',
   ),
   LearningCard(
     id: 'R',
@@ -145,6 +162,7 @@ const alphabetCards = <LearningCard>[
     word: 'Rabbit',
     emoji: '🐰',
     colorValue: 0xFFFFDCE9,
+    imagePath: 'assets/images/alphabet/r_rabbit.jpg',
   ),
   LearningCard(
     id: 'S',
@@ -153,6 +171,7 @@ const alphabetCards = <LearningCard>[
     word: 'Sun',
     emoji: '☀️',
     colorValue: 0xFFFFF0AD,
+    imagePath: 'assets/images/alphabet/s_sun.jpg',
   ),
   LearningCard(
     id: 'T',
@@ -161,6 +180,7 @@ const alphabetCards = <LearningCard>[
     word: 'Tiger',
     emoji: '🐯',
     colorValue: 0xFFFFE0AE,
+    imagePath: 'assets/images/alphabet/t_tiger.jpg',
   ),
   LearningCard(
     id: 'U',
@@ -169,6 +189,7 @@ const alphabetCards = <LearningCard>[
     word: 'Umbrella',
     emoji: '☂️',
     colorValue: 0xFFDAEAFE,
+    imagePath: 'assets/images/alphabet/u_umbrella.jpg',
   ),
   LearningCard(
     id: 'V',
@@ -177,6 +198,7 @@ const alphabetCards = <LearningCard>[
     word: 'Van',
     emoji: '🚐',
     colorValue: 0xFFD6F3D6,
+    imagePath: 'assets/images/alphabet/v_van.jpg',
   ),
   LearningCard(
     id: 'W',
@@ -185,6 +207,7 @@ const alphabetCards = <LearningCard>[
     word: 'Watch',
     emoji: '⌚',
     colorValue: 0xFFE7D8FF,
+    imagePath: 'assets/images/alphabet/w_watch.jpg',
   ),
   LearningCard(
     id: 'X',
@@ -193,6 +216,7 @@ const alphabetCards = <LearningCard>[
     word: 'Xylophone',
     emoji: '🎼',
     colorValue: 0xFFFFD5D5,
+    imagePath: 'assets/images/alphabet/x_xylophone.jpg',
   ),
   LearningCard(
     id: 'Y',
@@ -201,6 +225,7 @@ const alphabetCards = <LearningCard>[
     word: 'Yak',
     emoji: '🐃',
     colorValue: 0xFFE8D6BC,
+    imagePath: 'assets/images/alphabet/y_yak.jpg',
   ),
   LearningCard(
     id: 'Z',
@@ -209,5 +234,6 @@ const alphabetCards = <LearningCard>[
     word: 'Zebra',
     emoji: '🦓',
     colorValue: 0xFFCFEFF2,
+    imagePath: 'assets/images/alphabet/z_zebra.jpg',
   ),
 ];
